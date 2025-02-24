@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
-from .schemas import UFOOrderSchema, OrderResolutionSchema
+from app.schemas import UFOOrderSchema, OrderResolutionSchema
 
 async def get_ufo_orders(db: AsyncSession, ih_number: str = None, order_id: int = None, customer_order_id: str = None, integration_id: str = None, transaction_id: str = None):
     query = "SELECT * FROM ufo_order_table WHERE 1=1"

@@ -1,8 +1,9 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
-from .routes import data
 from sqlalchemy import text
-from .db import get_db, shutdown
+
+from app.routes import data
+from app.db import get_db, shutdown
 import logging
 
 logger = logging.getLogger('uvicorn.error')

@@ -4,7 +4,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from ..db import get_db
 from ..crud import get_ufo_orders, get_order_resolutions
 from ..schemas import UFOOrderResponse, OrderResolutionResponse
-from typing import List
 
 router = APIRouter()
 
