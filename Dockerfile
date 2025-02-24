@@ -4,7 +4,7 @@ WORKDIR /app
 
 # Install dependencies
 COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 # Copy application code
 COPY app/ .
@@ -13,4 +13,4 @@ COPY app/ .
 EXPOSE 8000
 
 # Command to run the FastAPI app
-CMD ["fastapi run", "main", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["fastapi", "run", "main", "--port", "8000"]
