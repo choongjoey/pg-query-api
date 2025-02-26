@@ -40,25 +40,25 @@ async def get_order_resolutions(db: AsyncSession, ih_number: str = None, order_i
 
 async def insert_order_resolution(db: AsyncSession, resolution: OrderResolutionSchema):
     query = text("""
-        INSERT INTO order_resolution_table (action_timestamp, order_id, submitted_date, integration_id, 
-                                            transaction_id, ih_number, system, root_cause_analysis, action_taken, costumer_order_id) 
+        INSERT INTO order_resolution (action_timestamp, order_id, submitted_date, integration_id, 
+                                            transaction_id, ih_number, system, root_cause_analysis, action_taken, customer_order_id) 
         VALUES (:action_timestamp, :order_id, :submitted_date, :integration_id, 
-                :transaction_id, :ih_number, :system, :root_cause_analysis, :action_taken, :costumer_order_id)
+                :transaction_id, :ih_number, :system, :root_cause_analysis, :action_taken, :customer_order_id)
         RETURNING *
     """)
-    result = await db.execute(query, resolution.dict())
+    result = await db.execute(query, resolution.model_dump())
     await db.commit()
-    return result.fetchone()
+    return OrderResolutionSchema(**result.fetchone()._asdict())
 
-async def update_order_resolution(db: AsyncSession, order_id: int, ih_number: str, resolution_update: dict):
+async def update_order_resolution(db: AsyncSession, order_id: int, resolution_update: dict):
     set_clause = ", ".join([f"{key} = :{key}" for key in resolution_update.keys()])
     query = text(f"""
-        UPDATE order_resolution_table
+        UPDATE order_resolution
         SET {set_clause}
-        WHERE order_id = :order_id AND ih_number = :ih_number
+        WHERE order_id = :order_id
         RETURNING *
     """)
-    params = {"order_id": order_id, "ih_number": ih_number, **resolution_update}
+    params = {"order_id": order_id, **resolution_update}
     result = await db.execute(query, params)
     await db.commit()
-    return result.fetchone()
+    return OrderResolutionSchema(**result.fetchone()._asdict())

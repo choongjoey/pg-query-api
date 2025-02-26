@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from sqlalchemy import text
 
-from app.routes import ufo_orders, order_resolutions
+from app.routes import order_resolution
 from app.db import get_db, shutdown
 import logging
 
@@ -20,4 +20,4 @@ async def lifespan(app: FastAPI):
     await shutdown()
 
 app = FastAPI(lifespan=lifespan)
-app.include_router(order_resolutions.router)
+app.include_router(order_resolution.router)
